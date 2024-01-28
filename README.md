@@ -1,5 +1,9 @@
 # quarkus-outbox-pattern
 
+This repository represents the code developed in the [post](https://matheuscruz.dev/2024/01/29/oubox-pattern-in-quarkus).
+
+--- 
+
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
