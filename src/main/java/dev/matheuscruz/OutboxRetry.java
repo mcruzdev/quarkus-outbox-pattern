@@ -29,19 +29,15 @@ public class OutboxRetry {
         this.publisher = new SuccessPublisher();
     }
 
-    @Scheduled(every = "5s")
+    @Scheduled(every = "60s")
     void retry() {
         List<Outbox> outboxs = this.outboxRepository.listAll();
-        List<String> ids = new ArrayList<>();
-
         for (Outbox outbox : outboxs) {
             this.publisher.send(outbox.getMessage());
-            ids.add(outbox.getId());
+            QuarkusTransaction.requiringNew().run(() -> {
+                this.outboxRepository.delete("id in (?1)", ids);
+            });
         }
-
-        QuarkusTransaction.requiringNew().run(() -> {
-            this.outboxRepository.delete("id in (?1)", ids);
-        });
     }
 
     public record SuccessPublisher() {
